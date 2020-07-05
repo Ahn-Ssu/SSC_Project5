@@ -27,10 +27,9 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		balck = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/blackCatStone.png");
-		white = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/WhiteCatStone.png")
+		white = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/WhiteCatStone.png");
 		npc = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone.png");
 	}
-z
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -44,7 +43,16 @@ z
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		int now = Justice.getInstance().getCount();
 		
+		System.out.println(now);
+		
+		if(now%3 == 0 )
+			this.setIcon(npc);
+		else if(now%3==1)
+			this.setIcon(balck);
+		else if(now%3==2)
+			this.setIcon(white);
 	}
 
 	@Override
