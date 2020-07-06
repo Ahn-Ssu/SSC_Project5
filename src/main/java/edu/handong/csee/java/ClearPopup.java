@@ -29,10 +29,10 @@ public class ClearPopup extends JComponent implements ActionListener {
 		JLabel catIcon = new JLabel(" ");
 		catIcon.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		if(role==1) {
-			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/blackCatStone.png"));
+			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/whiteCatStone.png"));
 		}
 		else if (role == -1) {
-			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/whiteCatStone.png"));
+			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/blackCatStone.png"));
 		}
 		catIcon.setBounds(42, 46, 51, 50);
 		popUp.getContentPane().add(catIcon);

@@ -15,7 +15,6 @@ public class Justice {
 	private static int leftRightCount;
 
 	private static StopWatch playTimer;
-	private StopWatch timeOut;
 	
 	public Justice() {
 		count = 0;
@@ -72,6 +71,7 @@ public class Justice {
 			rightSlopeBottomCheck(x, y, role);
 		} catch (Exception e) {
 			System.out.println("승리" + role);
+			new ClearPopup(role);
 			StopWatch.stopPlayTimeCount();
 		}
 
