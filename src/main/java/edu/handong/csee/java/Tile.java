@@ -51,7 +51,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		}
 		else if(now%4==0) {
 			this.setIcon(black);
-			PlayFrame.getInstance().setTurnLabel(black);
+			PlayFrame.getInstance().setTurnLabel(white);
 		}
 		else if(now%4==1) {
 			this.setIcon(white);
@@ -59,7 +59,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		}
 		else if(now%4==2) {
 			this.setIcon(white);
-			PlayFrame.getInstance().setTurnLabel(white);
+			PlayFrame.getInstance().setTurnLabel(black);
 		}
 		else if(now%4==3) {
 			this.setIcon(black);

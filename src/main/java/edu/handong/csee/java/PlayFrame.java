@@ -109,6 +109,7 @@ public class PlayFrame extends JComponent implements ActionListener  {
 		
 		
 		if(e.getSource().equals(startButton)) {
+			setTurnLabel(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/blackCatStone.png"));
 			startButton.setText("게임 중...");
 			startButton.setEnabled(false);
 			Justice.getInstance().setDoStart(true);
