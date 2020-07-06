@@ -62,7 +62,7 @@ public class PlayFrame extends JComponent implements ActionListener  {
 		playFrame.getContentPane().add(nowTurnLabelHead);
 		
 		nowTurnLabelBody = new JLabel(" ");
-		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone.png"));
+		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone - red.png"));
 		nowTurnLabelBody.setBounds(1033, 159, 60, 60);
 		playFrame.getContentPane().add(nowTurnLabelBody);
 		

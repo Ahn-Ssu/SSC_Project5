@@ -17,7 +17,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		this.setSize(39, 39);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		hereStone = new Stone(i,j);
+		hereStone = new Stone(j,i);
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -33,35 +33,27 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		
 		if(!Justice.getInstance().isDoStart()) {
 			hereStone.setMyJob(Stone.NPC);
-			this.setIcon(hereStone.getRoleIcon());
 			PlayFrame.getInstance().setTurnLabel(hereStone.getRoleIcon());
 		}
 		else if(now%4==0) {
 			hereStone.setMyJob(Stone.BLACK);
-			this.setIcon(hereStone.getRoleIcon());
 			PlayFrame.getInstance().setTurnLabel(Stone.WhiteIcon);
 		}
 		else if(now%4==1) {
 			hereStone.setMyJob(Stone.WHITE);
-			this.setIcon(hereStone.getRoleIcon());
 			PlayFrame.getInstance().setTurnLabel(Stone.WhiteIcon);
 		}
 		else if(now%4==2) {
 			hereStone.setMyJob(Stone.WHITE);
-			this.setIcon(hereStone.getRoleIcon());
 			PlayFrame.getInstance().setTurnLabel(Stone.BlackIcon);
 		}
 		else if(now%4==3) {
 			hereStone.setMyJob(Stone.BLACK);
-			this.setIcon(hereStone.getRoleIcon());
 			PlayFrame.getInstance().setTurnLabel(Stone.BlackIcon);
 		}
 			
-		System.out.println(hereStone.getLocationNRole()[0] + " : " +hereStone.getLocationNRole()[1] + " : " +hereStone.getLocationNRole()[2]);
-		removeMouseListener(this);
-		removeMouseMotionListener(this);
-		cursor = Cursor.getDefaultCursor();
-		PlayFrame.getPlayFrame().setCursor(cursor);
+		infoActivation();
+	
 	}
 
 	@Override
@@ -83,5 +75,15 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		cursor = Cursor.getDefaultCursor();
 		PlayFrame.getPlayFrame().setCursor(cursor);
 	}
-
+	
+	private void infoActivation() {
+		this.setIcon(hereStone.getRoleIcon());
+		System.out.println(hereStone.getLocationNRole()[0] + " : " +hereStone.getLocationNRole()[1] + " : " +hereStone.getLocationNRole()[2]);
+		Justice.getInstance().setGameInfo(hereStone.getLocationNRole());
+		
+		removeMouseListener(this);
+		removeMouseMotionListener(this);
+		cursor = Cursor.getDefaultCursor();
+		PlayFrame.getPlayFrame().setCursor(cursor);
+	}
 }

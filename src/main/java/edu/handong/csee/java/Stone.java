@@ -19,7 +19,7 @@ public class Stone {
 	
 	public static final ImageIcon BlackIcon = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/blackCatStone.png");
 	public static final ImageIcon WhiteIcon = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/WhiteCatStone.png");
-	public static final ImageIcon NPCIcon = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone.png");
+	public static final ImageIcon NPCIcon = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone - red.png");
 	
 	public Stone(int indexX, int indexY) {
 		locationNRole = new int[3];
