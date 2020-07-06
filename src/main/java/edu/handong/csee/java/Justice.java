@@ -9,20 +9,18 @@ public class Justice {
 
 	private int[][] playInfo;
 
-	private boolean topEnd;
-
 	private static int leftSlopeCount;
 	private static int rightSlopeCount;
 	private static int upDownCount;
 	private static int leftRightCount;
-	private static boolean upDown;
-	private static boolean leftRight;
-	private static boolean leftSlope;
-	private static boolean rightSlope;
 
+	private static StopWatch playTimer;
+	private StopWatch timeOut;
+	
 	public Justice() {
 		count = 0;
 		playInfo = new int[19][19];
+		playTimer = new StopWatch();
 	}
 
 	public static Justice getInstance() {
@@ -41,6 +39,8 @@ public class Justice {
 
 	public void setDoStart(boolean doStart) {
 		this.doStart = doStart;
+		StopWatch.startPlayTimeCount();
+		Tile.getTimeKeeper().startCountDown();
 	}
 
 	public boolean isDoStart() {
@@ -53,15 +53,13 @@ public class Justice {
 
 		checkPlayInfo();
 
-		if(count>10)
-		checkWin(activatedInfo[0], activatedInfo[1], activatedInfo[2]);
+//		if (count > 10)
+			checkWin(activatedInfo[0], activatedInfo[1], activatedInfo[2]);
 	}
 
 	private void checkWin(int x, int y, int role) {
 		// 어느방향으로던 6스택 쌓으면 승리~
-
 		leftSlopeCount = rightSlopeCount = upDownCount = leftRightCount = 1;
-
 		System.out.println("현재 좌표! " + x + " : " + y);
 		try {
 			upCheck(x, y, role);
@@ -70,14 +68,14 @@ public class Justice {
 			rightCheck(x, y, role);
 			leftSlopeTopCheck(x, y, role);
 			leftSlopeBottomCheck(x, y, role);
-			rightSlopeTopCheck(x,y,role);
-			rightSlopeBottomCheck(x,y,role);
+			rightSlopeTopCheck(x, y, role);
+			rightSlopeBottomCheck(x, y, role);
 		} catch (Exception e) {
-			System.out.println("승리" +role);
+			System.out.println("승리" + role);
+			StopWatch.stopPlayTimeCount();
 		}
-		
-		
-		System.out.println("ud : " + upDownCount + ", LR : " + leftRightCount + ", RS : " + rightSlopeCount + ", LS : "
+
+		System.out.println("UD : " + upDownCount + ", LR : " + leftRightCount + ", RS : " + rightSlopeCount + ", LS : "
 				+ leftSlopeCount);
 	}
 
@@ -92,8 +90,9 @@ public class Justice {
 	}
 
 	private void upCheck(int x, int y, int role) throws Exception {
+		if(x == 0 )
+			return;
 		
-
 		if (playInfo[x - 1][y] == role) {
 			System.out.println("위에 있대용 : " + x + " , " + y);
 			upDownCount++;
@@ -102,16 +101,16 @@ public class Justice {
 			System.out.println("위에 끝났대용 : " + x + " , " + y);
 			return;
 		}
-		
-		
+
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}
 	}
 
 	private void downCheck(int x, int y, int role) throws Exception {
+		if( x == 18 )
+				return;
 		
-
 		if (playInfo[x + 1][y] == role) {
 			System.out.println("아래 있대용 : " + x + " , " + y);
 			upDownCount++;
@@ -121,17 +120,17 @@ public class Justice {
 			return;
 		}
 
-		// 정규식 밑에 위치한 이유는 6 이상으로 길게 하는 경우 승리 판정을 안하기 위함 
+		// 정규식 밑에 위치한 이유는 6 이상으로 길게 하는 경우 승리 판정을 안하기 위함
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}
 	}
 
 	private void leftCheck(int x, int y, int role) throws Exception {
-
+		if (y == 0)
+			return;
 		
-
-		if (playInfo[x][y - 1] == role ) {
+		if (playInfo[x][y - 1] == role) {
 			System.out.println("왼쪽에 있대용 : " + x + " , " + y);
 			leftRightCount++;
 			leftCheck(x, y - 1, role);
@@ -139,16 +138,17 @@ public class Justice {
 			System.out.println("왼쪽 끝났대용 : " + x + " , " + y);
 			return;
 		}
-		
+
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}
 	}
 
 	private void rightCheck(int x, int y, int role) throws Exception {
-
-
-		if (playInfo[x][y + 1] == role ) {
+		if( y == 18)
+				return;
+		
+		if (playInfo[x][y + 1] == role) {
 			System.out.println("오른쪽에 있대용 : " + x + " , " + y);
 			leftRightCount++;
 			rightCheck(x, y + 1, role);
@@ -162,7 +162,9 @@ public class Justice {
 	}
 
 	private void leftSlopeTopCheck(int x, int y, int role) throws Exception {
-
+		if (x == 0 || y == 0)
+			return;
+		
 		if (playInfo[x - 1][y - 1] == role) {
 			System.out.println("왼쪽 위에 있대용 : " + x + " , " + y);
 			leftSlopeCount++;
@@ -171,14 +173,17 @@ public class Justice {
 			System.out.println("왼쪽 위에 끝났어용 : " + x + " , " + y);
 			return;
 		}
-		
+
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}
 	}
-	private void leftSlopeBottomCheck(int x, int y, int role) throws Exception {
 
-		if (playInfo[x + 1][y + 1] == role ) {
+	private void leftSlopeBottomCheck(int x, int y, int role) throws Exception {
+		if( x == 18 || y == 18)
+				return;
+		
+		if (playInfo[x + 1][y + 1] == role) {
 			System.out.println("오른 아래 있대용 : " + x + " , " + y);
 			leftSlopeCount++;
 			leftSlopeBottomCheck(x + 1, y + 1, role);
@@ -186,15 +191,16 @@ public class Justice {
 			System.out.println("오른 아래 끝났대용 : " + x + " , " + y);
 			return;
 		}
-		
+
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}
 	}
 
 	private void rightSlopeTopCheck(int x, int y, int role) throws Exception {
-
-		if (playInfo[x - 1][y + 1] == role ) {
+		if(x == 0 || y == 18)
+				return;
+		if (playInfo[x - 1][y + 1] == role) {
 			System.out.println("오른 위에 있대용 : " + x + " , " + y);
 			rightSlopeCount++;
 			rightSlopeTopCheck(x - 1, y + 1, role);
@@ -202,14 +208,17 @@ public class Justice {
 			System.out.println("오른 위에 끝났대용 : " + x + " , " + y);
 			return;
 		}
-		
+
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}
 	}
-	private void rightSlopeBottomCheck(int x, int y, int role) throws Exception {
 
-		if (playInfo[x + 1][y - 1] == role ) {
+	private void rightSlopeBottomCheck(int x, int y, int role) throws Exception {
+		if(x == 18 || y == 0)
+			return;
+		
+		if (playInfo[x + 1][y - 1] == role) {
 			System.out.println("왼쪽 아래 있대용 : " + x + " , " + y);
 			rightSlopeCount++;
 			rightSlopeBottomCheck(x + 1, y - 1, role);
@@ -217,8 +226,7 @@ public class Justice {
 			System.out.println("왼쪽 아래 끝났대용 : " + x + " , " + y);
 			return;
 		}
-		
-		
+
 		if (leftSlopeCount == 6 || rightSlopeCount == 6 || upDownCount == 6 || leftRightCount == 6) {
 			throw new Exception();
 		}

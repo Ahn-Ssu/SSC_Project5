@@ -11,6 +11,8 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 	private Cursor cursor;
 	private Stone hereStone;
 	
+	private static StopWatch TimeKeeper;
+	
 	public Tile(int i, int j){
 		this.setVisible(true);
 		this.setLocation(20 + i*40, 10 + j*40);
@@ -18,6 +20,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		hereStone = new Stone(j,i);
+		TimeKeeper = new StopWatch();
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -30,7 +33,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int now = Justice.getInstance().getCount();
-		
+		MusicPlayer.putSound();
 		if(!Justice.getInstance().isDoStart()) {
 			hereStone.setMyJob(Stone.NPC);
 			PlayFrame.getInstance().setTurnLabel(hereStone.getRoleIcon());
@@ -38,6 +41,9 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		else if(now%4==0) {
 			hereStone.setMyJob(Stone.BLACK);
 			PlayFrame.getInstance().setTurnLabel(Stone.WhiteIcon);
+			TimeKeeper.stopCountDown();
+			TimeKeeper = new StopWatch();
+			TimeKeeper.startCountDown();
 		}
 		else if(now%4==1) {
 			hereStone.setMyJob(Stone.WHITE);
@@ -46,6 +52,9 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		else if(now%4==2) {
 			hereStone.setMyJob(Stone.WHITE);
 			PlayFrame.getInstance().setTurnLabel(Stone.BlackIcon);
+			TimeKeeper.stopCountDown();
+			TimeKeeper = new StopWatch();
+			TimeKeeper.startCountDown();
 		}
 		else if(now%4==3) {
 			hereStone.setMyJob(Stone.BLACK);
@@ -85,5 +94,8 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		removeMouseMotionListener(this);
 		cursor = Cursor.getDefaultCursor();
 		PlayFrame.getPlayFrame().setCursor(cursor);
+	}
+	public static StopWatch getTimeKeeper() {
+		return TimeKeeper;
 	}
 }

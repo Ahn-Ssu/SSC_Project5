@@ -19,51 +19,56 @@ public class PlayFrame extends JComponent implements ActionListener  {
 	
 	private static JFrame playFrame = new JFrame("Connect6 - 육목");
 	private JButton startButton;
-	private JLabel nowTurnLabelBody;
+	private JLabel nowTurnLabelBody, countDownLabelBody ,playTimeLabelBody ;
 	
 	private BoardActivator myActivator = new BoardActivator();
 	private Tile[][] setTile;
 	
+	private MusicPlayer soundPlayer;
 			//인터페이스 구축 
 	public PlayFrame() {
+		
+		soundPlayer = new MusicPlayer();
+		soundPlayer.BGMPlay();
 		playFrame.getContentPane().setBackground(Color.WHITE);
 		playFrame.getContentPane().setLayout(null);
-		playFrame.setSize(1100, 900);
+		playFrame.setSize(1000, 900);
 		
 		JLabel playTimeLabelHead = new JLabel("대국 시간");
-		playTimeLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", playTimeLabelHead.getFont().getStyle(), playTimeLabelHead.getFont().getSize()));
+		playTimeLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", playTimeLabelHead.getFont().getStyle(), 15));
 		playTimeLabelHead.setHorizontalAlignment(SwingConstants.CENTER);
-		playTimeLabelHead.setBounds(1033, 19, 61, 16);
+		playTimeLabelHead.setBounds(859, 28, 91, 29);
 		playFrame.getContentPane().add(playTimeLabelHead);
 		
-		JLabel playTimeLabelBody = new JLabel("05 : 36");
-		playTimeLabelBody.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", playTimeLabelBody.getFont().getStyle(), playTimeLabelBody.getFont().getSize()));
+		playTimeLabelBody = new JLabel("05 : 36");
+		playTimeLabelBody.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", playTimeLabelBody.getFont().getStyle(), 17));
 		playTimeLabelBody.setHorizontalAlignment(SwingConstants.CENTER);
-		playTimeLabelBody.setBounds(1033, 47, 61, 16);
+		playTimeLabelBody.setBounds(859, 56, 91, 29);
 		playFrame.getContentPane().add(playTimeLabelBody);
 		
 		JLabel countDownLabelHead = new JLabel("제한 시간");
-		countDownLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", countDownLabelHead.getFont().getStyle(), countDownLabelHead.getFont().getSize()));
+		countDownLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", countDownLabelHead.getFont().getStyle(), 15));
 		countDownLabelHead.setHorizontalAlignment(SwingConstants.CENTER);
-		countDownLabelHead.setBounds(1033, 75, 61, 16);
+		countDownLabelHead.setBounds(859, 97, 91, 29);
 		playFrame.getContentPane().add(countDownLabelHead);
-		
-		JLabel countDownLabelBody = new JLabel("  0 : 01");
+		 
+		countDownLabelBody = new JLabel("00 : 00");
 		countDownLabelBody.setForeground(Color.RED);
-		countDownLabelBody.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", countDownLabelBody.getFont().getStyle(), countDownLabelBody.getFont().getSize()));
+		countDownLabelBody.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", countDownLabelBody.getFont().getStyle(), 17));
 		countDownLabelBody.setHorizontalAlignment(SwingConstants.CENTER);
-		countDownLabelBody.setBounds(1033, 103, 61, 16);
+		countDownLabelBody.setBounds(859, 138, 91, 45);
 		playFrame.getContentPane().add(countDownLabelBody);
 		
 		JLabel nowTurnLabelHead = new JLabel("놓을 차례");
-		nowTurnLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", nowTurnLabelHead.getFont().getStyle(), nowTurnLabelHead.getFont().getSize()));
+		nowTurnLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", nowTurnLabelHead.getFont().getStyle(), 15));
 		nowTurnLabelHead.setHorizontalAlignment(SwingConstants.CENTER);
-		nowTurnLabelHead.setBounds(1033, 131, 61, 16);
+		nowTurnLabelHead.setBounds(859, 182, 91, 29);
 		playFrame.getContentPane().add(nowTurnLabelHead);
 		
 		nowTurnLabelBody = new JLabel(" ");
-		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone - red.png"));
-		nowTurnLabelBody.setBounds(1033, 159, 60, 60);
+		nowTurnLabelBody.setHorizontalAlignment(SwingConstants.CENTER);
+		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/NPCCatStone - red.png"));
+		nowTurnLabelBody.setBounds(877, 210, 60, 60);
 		playFrame.getContentPane().add(nowTurnLabelBody);
 		
 		JPanel panel = new JPanel();
@@ -82,7 +87,7 @@ public class PlayFrame extends JComponent implements ActionListener  {
 		}
 		
 		JLabel lblNewLabel = new JLabel(" \n");
-		lblNewLabel.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/Connect6Borad.png"));
+		lblNewLabel.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/Connect6Borad.png"));
 		lblNewLabel.setBounds(18, 18, 760, 760);
 		panel.add(lblNewLabel);
 		
@@ -103,13 +108,21 @@ public class PlayFrame extends JComponent implements ActionListener  {
 	public void setTurnLabel(ImageIcon nowIcon) {
 		nowTurnLabelBody.setIcon(nowIcon);
 	}
+	
+	public void setPlayTimeLabelBody(String text) {
+		playTimeLabelBody.setText(text);
+	}
+	
+	public void setCountDownLabelBody(String text) {
+		countDownLabelBody.setText(text);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		
 		if(e.getSource().equals(startButton)) {
-			setTurnLabel(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/blackCatStone.png"));
+			setTurnLabel(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/blackCatStone.png"));
 			startButton.setText("게임 중...");
 			startButton.setEnabled(false);
 			Justice.getInstance().setDoStart(true);
