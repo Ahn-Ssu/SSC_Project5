@@ -9,7 +9,6 @@ public class MainRunner {
 
 	private void run(String[] args) {
 		PlayFrame.getInstance();
-		
 	}
 
 }
