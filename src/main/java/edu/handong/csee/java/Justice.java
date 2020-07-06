@@ -7,8 +7,11 @@ public class Justice {
 	private int count ;
 	private boolean doStart;
 	
+	private int[][] playInfo;
+			
 	public Justice() {
 		count = 0 ;
+		playInfo = new int[19][19];
 	}
 
 	public static Justice getInstance() {
