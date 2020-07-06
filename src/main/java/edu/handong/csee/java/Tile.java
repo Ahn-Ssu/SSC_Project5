@@ -13,7 +13,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 
 	private Cursor cursor;
 	private BufferedImage stoneImage;
-	private ImageIcon white, balck, npc;
+	private ImageIcon white, black, npc;
 	
 	
 	
@@ -23,10 +23,10 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 	public Tile(int x, int y){
 		this.setVisible(true);
 		this.setLocation(x, y);
-		this.setSize(38, 38);
+		this.setSize(39, 39);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		balck = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/blackCatStone.png");
+		black = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/blackCatStone.png");
 		white = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/WhiteCatStone.png");
 		npc = new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone.png");
 	}
@@ -38,21 +38,39 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int now = Justice.getInstance().getCount();
 		
-		System.out.println(now);
 		
-		if(now%3 == 0 )
+		if(!Justice.getInstance().isDoStart()) {
 			this.setIcon(npc);
-		else if(now%3==1)
-			this.setIcon(balck);
-		else if(now%3==2)
+			PlayFrame.getInstance().setTurnLabel(npc);
+		}
+		else if(now%4==0) {
+			this.setIcon(black);
+			PlayFrame.getInstance().setTurnLabel(black);
+		}
+		else if(now%4==1) {
 			this.setIcon(white);
+			PlayFrame.getInstance().setTurnLabel(white);
+		}
+		else if(now%4==2) {
+			this.setIcon(white);
+			PlayFrame.getInstance().setTurnLabel(white);
+		}
+		else if(now%4==3) {
+			this.setIcon(black);
+			PlayFrame.getInstance().setTurnLabel(black);
+		}
+			
+		
+		removeMouseListener(this);
+		removeMouseMotionListener(this);
+		cursor = Cursor.getDefaultCursor();
+		PlayFrame.getPlayFrame().setCursor(cursor);
 	}
 
 	@Override
@@ -76,7 +94,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		cursor = Cursor.getDefaultCursor();
-		setCursor(cursor);
+//		setCursor(cursor);
 		PlayFrame.getPlayFrame().setCursor(cursor);
 	}
 

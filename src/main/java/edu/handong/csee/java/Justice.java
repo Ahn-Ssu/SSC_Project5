@@ -5,7 +5,7 @@ public class Justice {
 	private static Justice instance; 
 	
 	private int count ;
-	
+	private boolean doStart;
 	
 	public Justice() {
 		count = 0 ;
@@ -19,7 +19,18 @@ public class Justice {
 	}
 
 	public int getCount() {
-		return count++;
+		if(doStart)
+			return count++;
+		else
+			return count;
+	}
+
+	public void setDoStart(boolean doStart) {
+		this.doStart = doStart;
+	}
+
+	public boolean isDoStart() {
+		return doStart;
 	}
 
 	

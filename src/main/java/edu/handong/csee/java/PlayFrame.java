@@ -1,42 +1,32 @@
 package edu.handong.csee.java;
 
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
-public class PlayFrame extends JComponent  {
+public class PlayFrame extends JComponent implements ActionListener  {
 
+	private static PlayFrame instance;
 	
 	private static JFrame playFrame = new JFrame("Connect6 - 육목");
+	private JButton startButton;
+	private JLabel nowTurnLabelBody;
+	
 	private BoardActivator myActivator = new BoardActivator();
-			
 	private Tile[][] setTile;
-	private Shape seletedTile;
-	private boolean isThere;
-	private Cursor cursor=null;
-	
-	private int infoX, infoY;
-	
 	
 			//인터페이스 구축 
 	public PlayFrame() {
-		playFrame.getContentPane().setBackground(Color.LIGHT_GRAY);
+		playFrame.getContentPane().setBackground(Color.WHITE);
 		playFrame.getContentPane().setLayout(null);
 		playFrame.setSize(1100, 900);
 		
@@ -71,8 +61,8 @@ public class PlayFrame extends JComponent  {
 		nowTurnLabelHead.setBounds(1033, 131, 61, 16);
 		playFrame.getContentPane().add(nowTurnLabelHead);
 		
-		JLabel nowTurnLabelBody = new JLabel(" ");
-		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/Origin - catStone1.jpg"));
+		nowTurnLabelBody = new JLabel(" ");
+		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/NPCCatStone.png"));
 		nowTurnLabelBody.setBounds(1033, 159, 60, 60);
 		playFrame.getContentPane().add(nowTurnLabelBody);
 		
@@ -81,13 +71,6 @@ public class PlayFrame extends JComponent  {
 		panel.setBounds(18, 49, 800, 790);
 		panel.setLayout(null);
 		playFrame.getContentPane().add(panel);
-		
-		
-		
-		JLabel label = new JLabel(" ");
-		label.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/imageSource/catStone1 - removeBG 복사본.png"));
-		label.setBounds(1034, 235, 60, 60);
-		playFrame.getContentPane().add(label);
 	
 		
 		setTile = myActivator.getSetTile();
@@ -103,11 +86,39 @@ public class PlayFrame extends JComponent  {
 		lblNewLabel.setBounds(18, 18, 760, 760);
 		panel.add(lblNewLabel);
 		
+		startButton = new JButton("게임 시작!");
+		startButton.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", startButton.getFont().getStyle(), startButton.getFont().getSize()));
+		startButton.setBounds(701, 13, 117, 29);
+		playFrame.getContentPane().add(startButton);
+		
 		playFrame.setVisible(true);
+		
+		startButton.addActionListener(this);
 	}
 
 	public static JFrame getPlayFrame() {
 		return playFrame;
+	}
+	
+	public void setTurnLabel(ImageIcon nowIcon) {
+		nowTurnLabelBody.setIcon(nowIcon);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		
+		if(e.getSource().equals(startButton)) {
+			startButton.setText("게임 중...");
+			startButton.setEnabled(false);
+			Justice.getInstance().setDoStart(true);
+		}
+	}
+
+	public static PlayFrame getInstance() {
+		if(instance == null)
+			instance = new PlayFrame();
+		return instance;
 	}
 
 }
