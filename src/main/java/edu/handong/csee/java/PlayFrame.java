@@ -18,18 +18,23 @@ public class PlayFrame extends JComponent implements ActionListener  {
 	private static PlayFrame instance;
 	
 	private static JFrame playFrame = new JFrame("Connect6 - 육목");
-	private JButton startButton;
-	private JLabel nowTurnLabelBody, countDownLabelBody ,playTimeLabelBody ;
+	private JButton startButton, soundOnOff, restartButton;
+	private JLabel boardLabel, nowTurnLabelBody, countDownLabelBody ,playTimeLabelBody  ;
+	private static JPanel panel;
 	
 	private BoardActivator myActivator = new BoardActivator();
+	private static StopWatch playTimer;
 	private Tile[][] setTile;
 	
-	private MusicPlayer soundPlayer;
-			//인터페이스 구축 
+	private static boolean soundOn = true;
+	
+	
+
+	//인터페이스 구축 
 	public PlayFrame() {
+	
+		MusicPlayer.BGMPlay();
 		
-		soundPlayer = new MusicPlayer();
-		soundPlayer.BGMPlay();
 		playFrame.getContentPane().setBackground(Color.WHITE);
 		playFrame.getContentPane().setLayout(null);
 		playFrame.setSize(1000, 900);
@@ -37,26 +42,26 @@ public class PlayFrame extends JComponent implements ActionListener  {
 		JLabel playTimeLabelHead = new JLabel("대국 시간");
 		playTimeLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", playTimeLabelHead.getFont().getStyle(), 15));
 		playTimeLabelHead.setHorizontalAlignment(SwingConstants.CENTER);
-		playTimeLabelHead.setBounds(859, 28, 91, 29);
+		playTimeLabelHead.setBounds(859, 30, 91, 29);
 		playFrame.getContentPane().add(playTimeLabelHead);
 		
 		playTimeLabelBody = new JLabel("05 : 36");
 		playTimeLabelBody.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", playTimeLabelBody.getFont().getStyle(), 17));
 		playTimeLabelBody.setHorizontalAlignment(SwingConstants.CENTER);
-		playTimeLabelBody.setBounds(859, 56, 91, 29);
+		playTimeLabelBody.setBounds(859, 60, 91, 29);
 		playFrame.getContentPane().add(playTimeLabelBody);
 		
 		JLabel countDownLabelHead = new JLabel("제한 시간");
 		countDownLabelHead.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", countDownLabelHead.getFont().getStyle(), 15));
 		countDownLabelHead.setHorizontalAlignment(SwingConstants.CENTER);
-		countDownLabelHead.setBounds(859, 97, 91, 29);
+		countDownLabelHead.setBounds(859, 100, 90, 29);
 		playFrame.getContentPane().add(countDownLabelHead);
 		 
 		countDownLabelBody = new JLabel("00 : 00");
 		countDownLabelBody.setForeground(Color.RED);
 		countDownLabelBody.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", countDownLabelBody.getFont().getStyle(), 17));
 		countDownLabelBody.setHorizontalAlignment(SwingConstants.CENTER);
-		countDownLabelBody.setBounds(859, 138, 91, 45);
+		countDownLabelBody.setBounds(859, 130, 91, 36);
 		playFrame.getContentPane().add(countDownLabelBody);
 		
 		JLabel nowTurnLabelHead = new JLabel("놓을 차례");
@@ -71,7 +76,7 @@ public class PlayFrame extends JComponent implements ActionListener  {
 		nowTurnLabelBody.setBounds(877, 210, 60, 60);
 		playFrame.getContentPane().add(nowTurnLabelBody);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(18, 49, 800, 790);
 		panel.setLayout(null);
@@ -86,19 +91,35 @@ public class PlayFrame extends JComponent implements ActionListener  {
 			}
 		}
 		
-		JLabel lblNewLabel = new JLabel(" \n");
-		lblNewLabel.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/Connect6Borad.png"));
-		lblNewLabel.setBounds(18, 18, 760, 760);
-		panel.add(lblNewLabel);
+		boardLabel = new JLabel("");
+		boardLabel.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/Connect6Borad.png"));
+		boardLabel.setBounds(18, 18, 760, 760);
+		panel.add(boardLabel);
 		
 		startButton = new JButton("게임 시작!");
 		startButton.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", startButton.getFont().getStyle(), startButton.getFont().getSize()));
 		startButton.setBounds(701, 13, 117, 29);
 		playFrame.getContentPane().add(startButton);
 		
+		soundOnOff = new JButton(" : On");
+		soundOnOff.setHorizontalAlignment(SwingConstants.LEADING);
+		soundOnOff.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", soundOnOff.getFont().getStyle(), soundOnOff.getFont().getSize()));
+		soundOnOff.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/speaker.png"));
+		soundOnOff.setBounds(859, 733, 117, 106);
+		soundOnOff.setBorderPainted(false);
+		playFrame.getContentPane().add(soundOnOff);
+		
+		 restartButton = new JButton("다시 하기");
+		restartButton.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", restartButton.getFont().getStyle(), restartButton.getFont().getSize()));
+		restartButton.setBounds(18, 12, 117, 29);
+		playFrame.getContentPane().add(restartButton);
+		
 		playFrame.setVisible(true);
 		
 		startButton.addActionListener(this);
+		soundOnOff.addActionListener(this);
+		restartButton.addActionListener(this);
+		
 	}
 
 	public static JFrame getPlayFrame() {
@@ -124,15 +145,67 @@ public class PlayFrame extends JComponent implements ActionListener  {
 		if(e.getSource().equals(startButton)) {
 			setTurnLabel(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/blackCatStone.png"));
 			startButton.setText("게임 중...");
+			playTimer = new StopWatch();
+			playTimer.startPlayTimeCount();
 			startButton.setEnabled(false);
 			Justice.getInstance().setDoStart(true);
 		}
+		else if(e.getSource().equals(soundOnOff)) {
+			if(soundOn) {
+				soundOnOff.setText(" : Off");
+				MusicPlayer.stopBGM();
+			}
+			else {
+				soundOnOff.setText(" : On");
+				MusicPlayer.startBGM();
+			}
+			soundOn = !soundOn;
+				
+		}
+		else if(e.getSource().equals(restartButton)) {
+			restart();
+		}
 	}
 
+	public static boolean isSoundOn() {
+		return soundOn;
+	}
+	
 	public static PlayFrame getInstance() {
 		if(instance == null)
 			instance = new PlayFrame();
 		return instance;
 	}
+	
+	public static void stopPlayTimer() {
+		playTimer.stopPlayTimeCount();
+	}
+	
+	public static void clearActivate() {
+		panel.removeAll();
+	}
+	
+	private void restart() {
+		System.out.println("re");
+		 
+		panel.removeAll();
+		Justice.getInstance().setDoStart(false);
+		myActivator = new BoardActivator();
+		setTile = myActivator.getSetTile();
 
+		for (Tile[] temp : setTile) {
+			for (Tile t : temp) {
+				panel.add(t);
+			}
+		}
+		Justice.getInstance().clear();
+		panel.add(boardLabel);
+		playFrame.setVisible(false);
+		playFrame.setVisible(true);
+		playTimer.stopPlayTimeCount();
+		Tile.stopTimer();
+		nowTurnLabelBody.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/NPCCatStone - red.png"));
+		startButton.setText("게임 시작!");
+		startButton.setEnabled(true);
+	}
 }

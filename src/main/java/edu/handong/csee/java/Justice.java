@@ -14,12 +14,10 @@ public class Justice {
 	private static int upDownCount;
 	private static int leftRightCount;
 
-	private static StopWatch playTimer;
 	
 	public Justice() {
 		count = 0;
 		playInfo = new int[19][19];
-		playTimer = new StopWatch();
 	}
 
 	public static Justice getInstance() {
@@ -27,6 +25,12 @@ public class Justice {
 			instance = new Justice();
 
 		return instance;
+	}
+	
+	public void clear() {
+		count = 0;
+		playInfo = null;
+		playInfo = new int[19][19];
 	}
 
 	public int getCount() {
@@ -38,8 +42,9 @@ public class Justice {
 
 	public void setDoStart(boolean doStart) {
 		this.doStart = doStart;
-		StopWatch.startPlayTimeCount();
-		Tile.getTimeKeeper().startCountDown();
+		if(doStart) {
+			Tile.getTimeKeeper().startCountDown();
+		}
 	}
 
 	public boolean isDoStart() {
@@ -63,16 +68,20 @@ public class Justice {
 		try {
 			upCheck(x, y, role);
 			downCheck(x, y, role);
+			
 			leftCheck(x, y, role);
 			rightCheck(x, y, role);
+			
 			leftSlopeTopCheck(x, y, role);
 			leftSlopeBottomCheck(x, y, role);
+			
 			rightSlopeTopCheck(x, y, role);
 			rightSlopeBottomCheck(x, y, role);
 		} catch (Exception e) {
 			System.out.println("승리" + role);
 			new ClearPopup(role);
-			StopWatch.stopPlayTimeCount();
+			Tile.stopTimer();
+			PlayFrame.stopPlayTimer();
 		}
 
 		System.out.println("UD : " + upDownCount + ", LR : " + leftRightCount + ", RS : " + rightSlopeCount + ", LS : "

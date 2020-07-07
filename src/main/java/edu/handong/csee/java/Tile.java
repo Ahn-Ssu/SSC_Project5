@@ -11,7 +11,7 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 	private Cursor cursor;
 	private Stone hereStone;
 	
-	private static StopWatch TimeKeeper;
+	private static StopWatch TimeKeeper = new StopWatch();
 	
 	public Tile(int i, int j){
 		this.setVisible(true);
@@ -20,7 +20,6 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		hereStone = new Stone(j,i);
-		TimeKeeper = new StopWatch();
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -85,6 +84,8 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 		PlayFrame.getPlayFrame().setCursor(cursor);
 	}
 	
+	
+	
 	private void infoActivation() {
 		this.setIcon(hereStone.getRoleIcon());
 		System.out.println(hereStone.getLocationNRole()[0] + " : " +hereStone.getLocationNRole()[1] + " : " +hereStone.getLocationNRole()[2]);
@@ -97,5 +98,10 @@ public class Tile extends JLabel implements MouseListener, MouseMotionListener{
 	}
 	public static StopWatch getTimeKeeper() {
 		return TimeKeeper;
+	}
+	
+	public static void stopTimer() {
+		TimeKeeper.stopCountDown();
+		TimeKeeper  = new StopWatch();
 	}
 }

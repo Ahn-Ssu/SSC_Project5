@@ -17,25 +17,16 @@ public class ClearPopup extends JComponent implements ActionListener {
 
 	private JFrame popUp; 
 	private JButton OKButton;
-	
+	private int role;
 	
 	public ClearPopup(int role) {
-		popUp = new JFrame ("승 리!");
+		this.role = role;
+		popUp = new JFrame ("알림");
 		popUp.getContentPane().setBackground(Color.WHITE);
 		popUp.setBackground(Color.WHITE);
 		popUp.getContentPane().setForeground(Color.WHITE);
 		popUp.getContentPane().setLayout(null);
 		
-		JLabel catIcon = new JLabel(" ");
-		catIcon.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		if(role==1) {
-			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/whiteCatStone.png"));
-		}
-		else if (role == -1) {
-			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/blackCatStone.png"));
-		}
-		catIcon.setBounds(42, 46, 51, 50);
-		popUp.getContentPane().add(catIcon);
 		
 		JLabel InfoMessageLabel = new JLabel("이겼어요!");
 		InfoMessageLabel.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", InfoMessageLabel.getFont().getStyle(), InfoMessageLabel.getFont().getSize()));
@@ -47,6 +38,28 @@ public class ClearPopup extends JComponent implements ActionListener {
 		reactionLabel.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", reactionLabel.getFont().getStyle(), 15));
 		reactionLabel.setBounds(42, 23, 167, 16);
 		popUp.getContentPane().add(reactionLabel);
+		
+		JLabel catIcon = new JLabel(" ");
+		catIcon.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", catIcon.getFont().getStyle(), 14));
+		if(role==1) {
+			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/whiteCatStone.png"));
+			InfoMessageLabel = new JLabel("하양이 이겼어요!");
+		}
+		else if (role == -1) {
+			catIcon.setIcon(new ImageIcon("/Users/suhyun/git/SSC_Project5/Source/blackCatStone.png"));
+			InfoMessageLabel = new JLabel("까망이 이겼어요!");
+		}
+		else if(role == 99) {
+			catIcon.setText(" ㅠㅅㅠ " );
+			InfoMessageLabel.setText("15초가 지났어요");
+			reactionLabel.setText("시간 초과");
+		}
+		catIcon.setBounds(42, 46, 51, 50);
+		popUp.getContentPane().add(catIcon);
+		
+		
+		
+		
 		
 		OKButton = new JButton("확인");
 		OKButton.setFont(new Font("DX\uACBD\uD544\uACE0\uB515B", OKButton.getFont().getStyle(), OKButton.getFont().getSize()));
@@ -65,6 +78,7 @@ public class ClearPopup extends JComponent implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource().equals(OKButton)) {
+			PlayFrame.clearActivate();
 			popUp.dispose();
 		}
 		

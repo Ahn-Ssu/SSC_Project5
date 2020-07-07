@@ -5,16 +5,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class StopWatch {
-	private static long begin = 0l;
-	private static long end = 0l;
 
-	private int secCount = 15;
-	private int allTime;
+	//타이머의 상황의 유동성을 주어야함 코드에서 15초가 아닌 게임 내에서 유연성을 줄 수 있게 유틸 확장 
+	private int secCount = 1000;
+	private int startTime;
 
-	private static int startTime;
-
-	Timer secTimer = new Timer();
-	TimerTask task15 = new TimerTask() {
+	private Timer secTimer = new Timer();
+	private TimerTask task15 = new TimerTask() {
 
 		@Override
 		public void run() {
@@ -22,7 +19,9 @@ public class StopWatch {
 				PlayFrame.getInstance().setCountDownLabelBody(secToMMSS(secCount));
 				secCount--;
 			} else {
-				task15.cancel();
+				new ClearPopup(99);
+				PlayFrame.stopPlayTimer();
+				secTimer.cancel();
 			}
 		}
 	};
@@ -32,11 +31,11 @@ public class StopWatch {
 	}
 
 	public void stopCountDown() {
-		task15.cancel();
+		secTimer.cancel();
 	}
 
-	static Timer playTimer = new Timer();
-	static TimerTask taskAll = new TimerTask() {
+	private Timer playTimer = new Timer();
+	private TimerTask taskAll = new TimerTask() {
 		@Override
 		public void run() {
 			PlayFrame.getInstance()
@@ -44,16 +43,16 @@ public class StopWatch {
 		}
 	};
 
-	public static void startPlayTimeCount() {
+	public void startPlayTimeCount() {
 		startTime = (int) System.currentTimeMillis() / 1000;
 		playTimer.schedule(taskAll, 0, 1000);
 	}
-
-	public static void stopPlayTimeCount() {
+	
+	public void stopPlayTimeCount() {
 		playTimer.cancel();
 	}
 
-	public static String secToMMSS(int secs) {
+	private String secToMMSS(int secs) {
 		int min, sec;
 
 		sec = secs % 60;
