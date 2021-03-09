@@ -1,7 +1,8 @@
-# SCC_Project 5.
+# Connect6
 ##### 2020 Summer Coding Camp - Project #5 (Prof. KIM HJ)
 ###### 21600402 Ahn SuHyun
 
+Task 5th
 
 ## Task : Connect6 (육목) 
 ### Time Period : 2 days
